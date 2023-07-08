@@ -1,0 +1,11 @@
+{
+  "api": {
+    "baseUrl": "http://localhost:8080"
+  },
+  "discord": {
+    "clientId": "1126986938428182549",
+    "tokenUrl": "https://discordapp.com/api/oauth2/token",
+    "authorizeUrl": "https://discordapp.com/oauth2/authorize",
+    "authorizeRedirectUrl": "http://localhost:3000/login"
+  }
+}
