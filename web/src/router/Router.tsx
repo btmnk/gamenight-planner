@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import { LandingPage } from "../pages/LandingPage/LandingPage";
 import { LoginPage } from "../pages/LoginPage/LoginPage";
 import { AuthRoute } from "./routeGuards/AuthRoute";

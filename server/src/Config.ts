@@ -6,6 +6,11 @@ const envSchema = z.object({
     .transform((arg) => JSON.parse(arg))
     .pipe(z.boolean()),
 
+  PORT: z
+    .string()
+    .transform((arg) => parseInt(arg))
+    .pipe(z.number()),
+
   CLIENT_SECRET: z.string().nonempty(),
 
   DISCORD_CLIENT_ID: z.string().nonempty(),

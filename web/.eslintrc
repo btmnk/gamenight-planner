@@ -1,0 +1,36 @@
+{
+  "root": true,
+  "env": { "browser": true, "es2020": true },
+
+  "parser": "@typescript-eslint/parser",
+
+  "plugins": ["@typescript-eslint", "import", "react-refresh"],
+
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+
+  "rules": {
+    "import/newline-after-import": ["warn", { "count": 1 }],
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always",
+        "groups": [["builtin", "external", "internal"], ["parent", "sibling"], "index", "object"],
+        "pathGroups": [
+          {
+            "pattern": "./**/*.css",
+            "group": "index",
+            "position": "after"
+          }
+        ]
+      }
+    ]
+  }
+}

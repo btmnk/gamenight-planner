@@ -1,8 +1,8 @@
 import "dotenv/config";
 
 import cors from "@fastify/cors";
-
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+
 import { appRouter } from "./trpc/appRouter.js";
 import { createContext } from "./trpc/tRPCContext.js";
 import { Fastify } from "./Fastify.js";
@@ -17,8 +17,8 @@ Fastify.register(fastifyTRPCPlugin, {
 
 (async () => {
   try {
-    await Fastify.listen({ port: 8080 });
-    console.log(`Server listening on port ${8080}`);
+    await Fastify.listen({ port: Config.PORT, host: "0.0.0.0" });
+    console.log(`Server listening on port ${Config.PORT}`);
   } catch (err) {
     Fastify.log.error(err);
     console.error(err);

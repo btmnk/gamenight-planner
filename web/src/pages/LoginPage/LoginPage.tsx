@@ -1,30 +1,22 @@
-import { Center, Loader } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import React from "react";
-import { Navigate, useSearchParams } from "react-router-dom";
-import { trpc } from "../../trpc/trpc";
+import { Navigate } from "react-router-dom";
+
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const LoginPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const code = searchParams.get("code");
+  const { isAuthenticated, isLoading, signinRedirect } = useAuth();
 
-  const loginQuery = trpc.auth.getToken.useQuery(
-    { code: code ?? "" },
-    { enabled: Boolean(code) }
-  );
-
-  if (loginQuery.error) {
-    return <Navigate to={"/"} replace />;
+  if (isLoading && !isAuthenticated) {
+    return <LoadingOverlay visible />;
   }
 
-  if (!code || code === "") {
-    return <Navigate to={"/"} replace />;
+  if (isAuthenticated) {
+    return <Navigate to={"/app"} />;
   }
 
-  return (
-    <Center mih={"100vh"}>
-      <Loader />
-    </Center>
-  );
+  signinRedirect();
+  return null;
 };
 
 export { LoginPage };

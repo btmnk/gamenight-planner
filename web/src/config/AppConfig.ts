@@ -11,6 +11,7 @@ export const AppConfigSchema = z.object({
     tokenUrl: z.string().nonempty(),
     authorizeUrl: z.string().nonempty(),
     authorizeRedirectUrl: z.string().nonempty(),
+    cdnBaseUrl: z.string().nonempty(),
   }),
 });
 

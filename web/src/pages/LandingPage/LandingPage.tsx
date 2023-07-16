@@ -1,18 +1,15 @@
-import { Anchor, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import React from "react";
-import { useAppConfig } from "../../config/AppConfig";
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../../hooks/auth/useAuth";
+
 const LandingPage: React.FC = () => {
-  const appConfig = useAppConfig();
-  const fullAuthorizeUrl = `${appConfig.discord.authorizeUrl}?response_type=code&client_id=${appConfig.discord.clientId}&scope=identify%20guilds&redirect_uri=${appConfig.discord.authorizeRedirectUrl}`;
+  const { signinRedirect, isAuthenticated } = useAuth();
 
   return (
     <div>
-      <Anchor href={fullAuthorizeUrl}>
-        <Button>Login with Discord</Button>
-      </Anchor>
-
+      {!isAuthenticated && <Button onClick={signinRedirect}>Login with Discord</Button>}
       <Button component={Link} to={"/app"}>
         App
       </Button>

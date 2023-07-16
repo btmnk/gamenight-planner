@@ -1,8 +1,9 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { tRPCContext } from "./tRPCContext.js";
-import { createRequestStamp } from "../util/createRequestStamp.js";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
+
+import { tRPCContext } from "./tRPCContext.js";
+import { createRequestStamp } from "../util/createRequestStamp.js";
 import { Config } from "../Config.js";
 import { SessionJwtToken } from "../domain/auth/SessionJwtToken.js";
 
@@ -26,7 +27,7 @@ const logger = t.middleware(async ({ ctx, next }) => {
           message: result.error.message,
           cause: result.error.cause,
         },
-      })
+      }),
     );
   } else {
     console.info(createRequestStamp({ method: ctx.req.method, path, delta: durationMs }));

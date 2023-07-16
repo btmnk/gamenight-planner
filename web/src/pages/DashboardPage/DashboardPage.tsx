@@ -1,4 +1,5 @@
 import React from "react";
+
 import { trpc } from "../../trpc/trpc";
 import { Layout } from "../../components/Layout/Layout";
 
@@ -7,7 +8,8 @@ const DashboardPage: React.FC = () => {
 
   return (
     <Layout>
-      <span>Good Day {meQuery.data?.username}</span>
+      <span>Good Day {meQuery.data?.global_name}</span>
+      <pre>{JSON.stringify(meQuery.data, undefined, 4)}</pre>
     </Layout>
   );
 };

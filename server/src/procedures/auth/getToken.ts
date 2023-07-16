@@ -2,14 +2,15 @@ import { z } from "zod";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import { addDays } from "date-fns";
+import { TRPCError } from "@trpc/server";
+import axios from "axios";
+
 import { publicProcedure } from "../../trpc/tRPC.js";
 import { Config } from "../../Config.js";
-import { TRPCError } from "@trpc/server";
 import { SessionJwtToken } from "../../domain/auth/SessionJwtToken.js";
 import { handleRequest } from "../../util/handleRequest.js";
 import { TokenResponse } from "../../domain/discord/TokenResponse.js";
-import axios from "axios";
-import { User } from "../../domain/discord/User.js";
+import { DiscordService } from "../../integration/discord/DiscordService.js";
 
 export const getToken = publicProcedure
   .input(z.object({ code: z.string() }).required())
@@ -27,7 +28,7 @@ export const getToken = publicProcedure
     const accessTokenData = await handleRequest(() =>
       axios.post<TokenResponse>(Config.DISCORD_TOKEN_URL, accessTokenExchangeData.toString(), {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      })
+      }),
     );
 
     if (!accessTokenData) {
@@ -36,13 +37,7 @@ export const getToken = publicProcedure
       });
     }
 
-    const { access_token } = accessTokenData;
-
-    const userInfo = await handleRequest(() =>
-      axios.get<User>(Config.DISCORD_USERS_ME, {
-        headers: { authorization: `Bearer ${access_token}` },
-      })
-    );
+    const userInfo = await DiscordService.getUserInfo(accessTokenData.access_token);
 
     if (!userInfo) {
       throw new TRPCError({
@@ -53,7 +48,7 @@ export const getToken = publicProcedure
     const tokenPayload: SessionJwtToken = {
       userId: userInfo.id,
       username: userInfo.username,
-      accessToken: access_token,
+      accessToken: accessTokenData.access_token,
     };
 
     const token = jwt.sign(tokenPayload, Config.CLIENT_SECRET);

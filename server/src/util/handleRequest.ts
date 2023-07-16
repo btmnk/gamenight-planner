@@ -1,9 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { AxiosResponse, AxiosError } from "axios";
 
-export const handleRequest = async <D = unknown>(
-  request: () => Promise<AxiosResponse<D>>
-): Promise<D> => {
+export const handleRequest = async <D = unknown>(request: () => Promise<AxiosResponse<D>>): Promise<D> => {
   try {
     const response = await request();
     return response.data;
@@ -11,14 +9,13 @@ export const handleRequest = async <D = unknown>(
     const axiosError: AxiosError = e as AxiosError;
 
     let statusCode = 418;
-    let message: string = "unknown";
+    let message = "unknown";
 
     if (axiosError.response) {
       const responseError = axiosError.response;
       statusCode = responseError.status;
       message = axiosError.message;
-      if (axiosError.response.data)
-        message += "\n" + JSON.stringify(axiosError.response.data);
+      if (axiosError.response.data) message += "\n" + JSON.stringify(axiosError.response.data);
     } else if (axiosError.request) {
       const requestError = axiosError.request;
       statusCode = requestError.status;

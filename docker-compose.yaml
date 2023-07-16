@@ -1,0 +1,25 @@
+version: "3"
+services:
+  web:
+    image: node:19-alpine
+    working_dir: /app
+    volumes:
+      - ./web:/app
+      - ./node_modules:/node_modules
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    restart: unless-stopped
+    tty: true
+
+  server:
+    image: node:19-alpine
+    working_dir: /app
+    volumes:
+      - ./server:/app
+      - ./node_modules:/node_modules
+    ports:
+      - "8080:8080"
+    command: npm run start
+    restart: unless-stopped
+    tty: true

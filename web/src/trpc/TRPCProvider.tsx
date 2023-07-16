@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, httpLink } from "@trpc/client";
 import React, { ReactNode, useMemo } from "react";
+
 import { trpc } from "./trpc";
 import { useAppConfig } from "../config/AppConfig";
 
@@ -41,7 +42,7 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
           },
         },
       }),
-    []
+    [],
   );
 
   const trpcClient = useMemo(
@@ -63,7 +64,7 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
           }),
         ],
       }),
-    [appConfig]
+    [appConfig],
   );
 
   return (
