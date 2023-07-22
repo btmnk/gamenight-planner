@@ -19,6 +19,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
           <UserMenu />
         </Group>
       </Header>
+
       <Box>{children}</Box>
     </Stack>
   );

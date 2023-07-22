@@ -13,6 +13,8 @@ const envSchema = z.object({
 
   CLIENT_SECRET: z.string().nonempty(),
 
+  DB_URL: z.string().nonempty(),
+
   DISCORD_CLIENT_ID: z.string().nonempty(),
   DISCORD_CLIENT_SECRET: z.string().nonempty(),
   DISCORD_TOKEN_URL: z.string().nonempty(),

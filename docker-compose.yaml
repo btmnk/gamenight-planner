@@ -20,6 +20,23 @@ services:
       - ./node_modules:/node_modules
     ports:
       - "8080:8080"
+    environment:
+      - DB_URL=postgresql://postgres:postgres@postgres/gamenight
     command: npm run start
     restart: unless-stopped
     tty: true
+
+  postgres:
+    image: postgres:15.3
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=gamenight
+
+volumes:
+  db-data:

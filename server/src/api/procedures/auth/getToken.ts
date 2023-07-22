@@ -6,11 +6,11 @@ import { TRPCError } from "@trpc/server";
 import axios from "axios";
 
 import { publicProcedure } from "../../trpc/tRPC.js";
-import { Config } from "../../Config.js";
-import { SessionJwtToken } from "../../domain/auth/SessionJwtToken.js";
-import { handleRequest } from "../../util/handleRequest.js";
-import { TokenResponse } from "../../domain/discord/TokenResponse.js";
-import { DiscordService } from "../../integration/discord/DiscordService.js";
+import { Config } from "../../../Config.js";
+import { SessionJwtToken } from "../../../domain/auth/SessionJwtToken.js";
+import { handleRequest } from "../../../util/handleRequest.js";
+import { TokenResponse } from "../../../domain/discord/TokenResponse.js";
+import { DiscordService } from "../../../integration/discord/DiscordService.js";
 
 export const getToken = publicProcedure
   .input(z.object({ code: z.string() }).required())

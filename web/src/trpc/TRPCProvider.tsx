@@ -20,7 +20,9 @@ const retryableStatusCodes = [
 ];
 
 const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
-  const appConfig = useAppConfig();
+  const {
+    api: { baseUrl },
+  } = useAppConfig();
 
   const queryClient = useMemo(
     () =>
@@ -54,7 +56,7 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
               process.env.NODE_ENV === "development" || (opts.direction === "down" && opts.result instanceof Error),
           }),
           httpLink({
-            url: appConfig.api.baseUrl + "/trpc",
+            url: baseUrl + "/trpc",
             fetch(url, options) {
               return fetch(url, {
                 ...options,
@@ -64,7 +66,7 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
           }),
         ],
       }),
-    [appConfig],
+    [baseUrl],
   );
 
   return (

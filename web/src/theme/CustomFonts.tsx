@@ -32,21 +32,6 @@ const CustomFonts: React.FC = () => {
             fontStyle: "normal",
           },
         },
-        // {
-        //   "@font-face": {
-        //     fontFamily: "Poppins",
-        //     src: `url('${PoppinsRegular}') format("truetype")`,
-        //     fontStyle: "normal",
-        //   },
-        // },
-        // {
-        //   "@font-face": {
-        //     fontFamily: "Poppins",
-        //     src: `url('${PoppinsBold}') format("truetype")`,
-        //     fontWeight: 500,
-        //     fontStyle: "normal",
-        //   },
-        // },
       ]}
     />
   );

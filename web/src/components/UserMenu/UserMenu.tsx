@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Menu, Text } from "@mantine/core";
+import { Button, Group, Menu, Text } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,8 +13,10 @@ const UserMenu: React.FC = () => {
     <Menu shadow="xl">
       <Menu.Target>
         <Button variant="subtle" color="gray" rightIcon={<FontAwesomeIcon size="sm" icon={faChevronDown} />}>
-          <DiscordAvatar userId={userInfo?.id ?? null} userAvatar={userInfo?.avatar ?? null} />
-          <Text>{userInfo?.global_name}</Text>
+          <Group>
+            <DiscordAvatar userId={userInfo?.id ?? null} userAvatar={userInfo?.avatar ?? null} />
+            <Text>{userInfo?.global_name}</Text>
+          </Group>
         </Button>
       </Menu.Target>
 
