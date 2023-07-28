@@ -1,5 +1,5 @@
 export interface SessionJwtToken {
-  userId: string;
+  discordUserId: string;
   username: string;
   accessToken: string;
 }

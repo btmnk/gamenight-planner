@@ -1,11 +1,13 @@
-import { useSearchParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useLocalStorage } from "@mantine/hooks";
 
 import { trpc } from "../../trpc/trpc";
 import { useAppConfig } from "../../config/AppConfig";
 
 export interface UseAuthResult {
-  signinRedirect: () => void;
+  signinRedirect: (redirectPath?: string) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
@@ -13,24 +15,38 @@ export interface UseAuthResult {
 export const useAuth = (): UseAuthResult => {
   const appConfig = useAppConfig();
 
-  const { authorizeRedirectUrl, authorizeUrl, clientId } = appConfig.discord;
-  const fullAuthorizeUrl = `${authorizeUrl}?response_type=code&client_id=${clientId}&scope=identify%20guilds&redirect_uri=${authorizeRedirectUrl}`;
+  const { authorizeUrl, authorizeRedirectUrl, clientId } = appConfig.discord;
 
-  const [searchParams] = useSearchParams();
+  const [redirectAfterLogin, setRedirectAfterLogin] = useLocalStorage({ key: "redirect_after_login" });
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const code = searchParams.get("code");
 
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const tokenQuery = trpc.auth.getToken.useQuery({ code: code ?? "" }, { enabled: Boolean(code) });
 
-  const authQuery = trpc.auth.getUserInfo.useQuery(undefined, { staleTime: 300000 });
+  useEffect(() => {
+    if (tokenQuery.isFetched && code) {
+      queryClient.clear();
+      searchParams.delete("code");
+      setSearchParams(searchParams);
+      navigate(redirectAfterLogin);
+    }
+  }, [tokenQuery.isFetched, code, searchParams, setSearchParams, queryClient, redirectAfterLogin, navigate]);
+
+  const authQuery = trpc.auth.getUserInfo.useQuery();
   const isAuthenticated = authQuery.isSuccess;
 
-  const signinRedirect = () => {
+  const signinRedirect = (redirectTo?: string) => {
+    const fullAuthorizeUrl = `${authorizeUrl}?response_type=code&client_id=${clientId}&scope=identify%20guilds&redirect_uri=${authorizeRedirectUrl}`;
+    setRedirectAfterLogin(redirectTo ?? window.location.pathname);
     window.location.href = fullAuthorizeUrl;
   };
 
   const isLoading = useMemo(() => {
-    return tokenQuery.isLoading || authQuery.isLoading;
-  }, [tokenQuery.isLoading, authQuery.isLoading]);
+    return tokenQuery.isFetching || authQuery.isLoading;
+  }, [tokenQuery.isFetching, authQuery.isLoading]);
 
   return {
     signinRedirect,

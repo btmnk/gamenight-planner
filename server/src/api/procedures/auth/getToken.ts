@@ -46,7 +46,7 @@ export const getToken = publicProcedure
     }
 
     const tokenPayload: SessionJwtToken = {
-      userId: userInfo.id,
+      discordUserId: userInfo.id,
       username: userInfo.username,
       accessToken: accessTokenData.access_token,
     };

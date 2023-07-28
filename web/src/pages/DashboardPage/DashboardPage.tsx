@@ -5,6 +5,9 @@ import { Layout } from "../../components/Layout/Layout";
 
 const DashboardPage: React.FC = () => {
   const meQuery = trpc.auth.getUserInfo.useQuery();
+  const eventsQuery = trpc.event.getEvents.useQuery();
+
+  console.log(eventsQuery.data);
 
   return (
     <Layout>

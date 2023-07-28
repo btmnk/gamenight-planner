@@ -6,6 +6,7 @@ import { tRPCContext } from "./tRPCContext.js";
 import { createRequestStamp } from "./util/createRequestStamp.js";
 import { Config } from "../../Config.js";
 import { SessionJwtToken } from "../../domain/auth/SessionJwtToken.js";
+import { UserRepository } from "../../persistence/repository/UserRepository.js";
 
 const t = initTRPC.context<tRPCContext>().create();
 
@@ -49,7 +50,9 @@ export const authProcedure = t.procedure.use(logger).use(async ({ ctx, next }) =
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  const authToken = jwt.verify(authTokenCookie, Config.CLIENT_SECRET) as SessionJwtToken;
+  const token = jwt.verify(authTokenCookie, Config.CLIENT_SECRET) as SessionJwtToken;
+  let user = await UserRepository.getUserByDiscordId(token.discordUserId);
+  if (!user) user = await UserRepository.createUser(token.discordUserId);
 
-  return next({ ctx: { token: authToken } });
+  return next({ ctx: { token, user } });
 });

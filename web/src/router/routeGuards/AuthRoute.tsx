@@ -1,18 +1,18 @@
 import { LoadingOverlay } from "@mantine/core";
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { trpc } from "../../trpc/trpc";
+
+import { useAuth } from "../../hooks/auth/useAuth";
 
 const AuthRoute: React.FC = () => {
+  const auth = useAuth();
   const location = useLocation();
 
-  const meQuery = trpc.auth.getUserInfo.useQuery();
-
-  if (meQuery.isLoading) {
+  if (auth.isLoading) {
     return <LoadingOverlay visible />;
   }
 
-  if (meQuery.isSuccess) {
+  if (auth.isAuthenticated) {
     return <Outlet />;
   }
 

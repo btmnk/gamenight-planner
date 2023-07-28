@@ -47,7 +47,19 @@ export const Theme: MantineThemeOverride = {
       "#090A0D",
     ],
   },
-  components: {},
+  components: {
+    Button: {
+      defaultProps: {
+        fw: "normal",
+      },
+
+      styles: () => ({
+        root: {
+          letterSpacing: 1,
+        },
+      }),
+    },
+  },
   other: {
     almostBlack: "#0a0b0e",
     textColor: "#cdcdcd",

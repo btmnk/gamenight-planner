@@ -1,8 +1,7 @@
 import { DB } from "../DB.js";
-import { Events } from "../schema/Events.js";
 
 export const EventRepository = {
-  get() {
-    return DB.select().from(Events);
+  getUserEvents(userId: string) {
+    return DB.query.Events.findMany({ where: (Users, { eq }) => eq(Users.id, userId) });
   },
 };
