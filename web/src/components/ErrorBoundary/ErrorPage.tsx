@@ -1,4 +1,4 @@
-import { Card, Center, Text, Image, Button, Stack, createStyles, Alert } from "@mantine/core";
+import { Card, Center, Text, Image, Button, Stack, Alert } from "@mantine/core";
 import React from "react";
 
 import ThisIsFine from "./assets/this_is_fine.png";
@@ -6,12 +6,6 @@ import ThisIsFine from "./assets/this_is_fine.png";
 export interface ErrorPageProps {
   error: unknown;
 }
-
-const useStyles = createStyles(() => ({
-  container: {
-    width: "40%",
-  },
-}));
 
 const ErrorPage: React.FC<ErrorPageProps> = (props) => {
   const { error } = props;
@@ -27,21 +21,19 @@ const ErrorPage: React.FC<ErrorPageProps> = (props) => {
   }
 
   const reloadPage = () => {
-    window.location.href = window.location.protocol + "//" + window.location.host + "/";
+    window.location.href = `${window.location.protocol}//${window.location.host}/`;
   };
-
-  const { classes } = useStyles();
 
   return (
     <Center pt={60}>
-      <Stack className={classes.container}>
+      <Stack w={"40%"}>
         <Card shadow={"xl"} radius="md">
           <Card.Section>
             <Image height={290} src={ThisIsFine} />
           </Card.Section>
 
           <Alert color={"red"} title={errorTitle} mt={"md"}>
-            <Text size={22} weight="bold">
+            <Text fz={22} fw="bold">
               {errorMessage}
             </Text>
 

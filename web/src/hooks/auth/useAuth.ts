@@ -1,10 +1,10 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocalStorage } from "@mantine/hooks";
 
 import { trpc } from "../../trpc/trpc";
 import { useAppConfig } from "../../config/AppConfig";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 
 export interface UseAuthResult {
   signinRedirect: (redirectPath?: string) => void;
@@ -17,23 +17,22 @@ export const useAuth = (): UseAuthResult => {
 
   const { authorizeUrl, authorizeRedirectUrl, clientId } = appConfig.discord;
 
-  const [redirectAfterLogin, setRedirectAfterLogin] = useLocalStorage({ key: "redirect_after_login" });
+  const [redirectAfterLogin, setRedirectAfterLogin] = useLocalStorage({
+    key: "redirect_after_login",
+  });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const code = searchParams.get("code");
+  const { code } = useSearch({ from: "/_public/login" });
 
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: "/" });
   const queryClient = useQueryClient();
   const tokenQuery = trpc.auth.getToken.useQuery({ code: code ?? "" }, { enabled: Boolean(code) });
 
   useEffect(() => {
     if (tokenQuery.isFetched && code) {
       queryClient.clear();
-      searchParams.delete("code");
-      setSearchParams(searchParams);
-      navigate(redirectAfterLogin);
+      navigate({ to: redirectAfterLogin });
     }
-  }, [tokenQuery.isFetched, code, searchParams, setSearchParams, queryClient, redirectAfterLogin, navigate]);
+  }, [tokenQuery.isFetched, code, queryClient, redirectAfterLogin, navigate]);
 
   const authQuery = trpc.auth.getUserInfo.useQuery();
   const isAuthenticated = authQuery.isSuccess;

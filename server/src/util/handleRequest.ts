@@ -1,28 +1,14 @@
 import { TRPCError } from "@trpc/server";
-import { AxiosResponse, AxiosError } from "axios";
 
-export const handleRequest = async <D = unknown>(request: () => Promise<AxiosResponse<D>>): Promise<D> => {
+export const handleRequest = async <D = unknown>(request: () => Promise<Response>): Promise<D> => {
+  const response = await request();
+
   try {
-    const response = await request();
-    return response.data;
+    return response.json() as Promise<D>;
   } catch (e) {
-    const axiosError: AxiosError = e as AxiosError;
+    const message = e instanceof Error ? e.message : "Unknown";
 
-    let statusCode = 418;
-    let message = "unknown";
-
-    if (axiosError.response) {
-      const responseError = axiosError.response;
-      statusCode = responseError.status;
-      message = axiosError.message;
-      if (axiosError.response.data) message += "\n" + JSON.stringify(axiosError.response.data);
-    } else if (axiosError.request) {
-      const requestError = axiosError.request;
-      statusCode = requestError.status;
-      message = requestError.statusText ?? "unknown";
-    }
-
-    switch (statusCode) {
+    switch (response.status) {
       case 403: {
         throw new TRPCError({ code: "FORBIDDEN", message });
       }

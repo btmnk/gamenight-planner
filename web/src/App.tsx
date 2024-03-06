@@ -1,22 +1,19 @@
 import React, { Suspense } from "react";
-import { RouterProvider } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 
-import { Router } from "./router/Router";
 import { TRPCProvider } from "./trpc/TRPCProvider";
 import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 import { LoadingScreen } from "./components/LoadingScreen/LoadingScreen";
 import { Theme } from "./theme/Theme";
-import { CustomFonts } from "./theme/CustomFonts";
+import { Router } from "./router/Router";
 
 const App: React.FC = () => {
   return (
-    <MantineProvider theme={Theme} withCSSVariables withGlobalStyles withNormalizeCSS>
-      <CustomFonts />
+    <MantineProvider theme={Theme} defaultColorScheme="dark" withCssVariables>
       <Suspense fallback={<LoadingScreen />}>
         <ErrorBoundary>
           <TRPCProvider>
-            <RouterProvider router={Router} />
+            <Router />
           </TRPCProvider>
         </ErrorBoundary>
       </Suspense>

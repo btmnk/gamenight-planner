@@ -1,12 +1,15 @@
-import { MantineThemeOverride, Tuple, DefaultMantineColor } from "@mantine/core";
+import { MantineThemeOverride, MantineColorsTuple, DefaultMantineColor } from "@mantine/core";
 
-type ExtendedCustomColors = "primary" | "stone" | DefaultMantineColor;
+import "@mantine/core/styles.layer.css";
+import "./globals.css";
+import "./fonts.css";
+
+type ExtendedCustomColors = "primary" | "stone" | "midnight" | DefaultMantineColor;
 
 declare module "@mantine/core" {
   export interface MantineThemeOther {
     almostBlack: string;
     textColor: string;
-    headerHeight: number;
     displayFont: string;
     discordEmbedBackground: string;
     discordMentionTextColor: string;
@@ -14,12 +17,11 @@ declare module "@mantine/core" {
   }
 
   export interface MantineThemeColorsOverride {
-    colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+    colors: Record<ExtendedCustomColors, MantineColorsTuple>;
   }
 }
 
 export const Theme: MantineThemeOverride = {
-  colorScheme: "dark",
   fontFamily: "Cairo",
   colors: {
     primary: [
@@ -46,25 +48,24 @@ export const Theme: MantineThemeOverride = {
       "#0E0F13",
       "#090A0D",
     ],
+    midnight: [
+      "#C7CCD5",
+      "#8E98AB",
+      "#101927",
+      "#172335",
+      "#324562",
+      "#2C313B",
+      "#1E2128",
+      "#14161C",
+      "#0E0F13",
+      "#090A0D",
+    ],
   },
-  components: {
-    Button: {
-      defaultProps: {
-        fw: "normal",
-      },
-
-      styles: () => ({
-        root: {
-          letterSpacing: 1,
-        },
-      }),
-    },
-  },
+  components: {},
   other: {
     almostBlack: "#0a0b0e",
     textColor: "#cdcdcd",
-    headerHeight: 60,
-    displayFont: "Poppins",
+    displayFont: "Genos",
     discordEmbedBackground: "#2f3136",
     discordMentionBackground: "#3c406f",
     discordMentionTextColor: "#c4d1ff",

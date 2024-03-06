@@ -4,9 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently -n 'web,server' -c 'yellow,green' --prefix '{name}' 'cd web && bun dev' 'cd server && bun dev'",
+    "studio": "cd server && bun run studio",
+    "gen:migrations": "cd server && bun run gen:migrations",
+    "gen:custom-migration": "cd server && bun run gen:custom-migration",
+    "db:push": "cd server && bun run db:push",
+    "db:migrate": "cd server && bun run db:migrate"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "@biomejs/biome": "1.5.3"
+  }
 }

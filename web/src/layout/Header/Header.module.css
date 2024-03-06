@@ -1,0 +1,39 @@
+:root {
+  --header-height: 50px;
+}
+
+.header {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--header-height);
+  background-color: #062134;
+}
+
+.bgLeft {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 350px;
+  background: url("./assets/header-bg.png");
+  background-position: left center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bgRight {
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 350px;
+  background: url("./assets/header-bg.png");
+  background-position: right center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

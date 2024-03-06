@@ -1,6 +1,5 @@
 import { LoadingOverlay } from "@mantine/core";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { trpc } from "../../trpc/trpc";
@@ -13,7 +12,7 @@ const LogoutPage: React.FC = () => {
 
   useEffect(() => {
     const logout = async () => {
-      if (logoutQuery.isLoading) return;
+      if (logoutQuery.isPending) return;
 
       await logoutQuery.mutateAsync();
       queryClient.clear();

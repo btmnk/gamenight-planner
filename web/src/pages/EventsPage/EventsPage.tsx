@@ -1,11 +1,9 @@
-import React from "react";
+import { PageLayout } from "../../layout/PageLayout/PageLayout";
 
-const EventsPage: React.FC = () => {
+export const EventsPage = () => {
   return (
-    <div>
-      <span>Hello world!</span>
-    </div>
+    <PageLayout>
+      <span>Hello EventsPage!</span>
+    </PageLayout>
   );
 };
-
-export { EventsPage };

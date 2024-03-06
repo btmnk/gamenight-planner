@@ -1,24 +1,18 @@
-import { createBrowserRouter } from "react-router-dom";
+import React from "react";
 
-import { AuthRoute } from "./routeGuards/AuthRoute";
-import { DashboardPage } from "../pages/DashboardPage/DashboardPage";
-import { EventsPage } from "../pages/EventsPage/EventsPage";
-import { LogoutPage } from "../pages/LogoutPage/LogoutPage";
+import { routeTree } from "./routeTree.gen";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-export const Router = createBrowserRouter([
-  {
-    path: "/",
-    element: <DashboardPage />,
-  },
+const router = createRouter({ routeTree });
 
-  {
-    path: "/logout",
-    element: <LogoutPage />,
-  },
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
-  {
-    path: "/",
-    element: <AuthRoute />,
-    children: [{ path: "/events", element: <EventsPage /> }],
-  },
-]);
+const Router: React.FC = () => {
+  return <RouterProvider router={router} />;
+};
+
+export { Router };

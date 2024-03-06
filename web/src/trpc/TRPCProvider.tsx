@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { loggerLink, httpLink } from "@trpc/client";
+import { httpLink, loggerLink } from "@trpc/client";
 import React, { ReactNode, useMemo } from "react";
-
 import { trpc } from "./trpc";
 import { useAppConfig } from "../config/AppConfig";
 
@@ -30,7 +29,7 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
         defaultOptions: {
           queries: {
             retry(failureCount, error) {
-              console.log(error);
+              console.error(error);
               const status = 418;
               // const status = composeResponseError(error)?.status;
 
@@ -53,10 +52,11 @@ const TRPCProvider: React.FC<TRPCProviderProps> = (props) => {
         links: [
           loggerLink({
             enabled: (opts) =>
-              process.env.NODE_ENV === "development" || (opts.direction === "down" && opts.result instanceof Error),
+              process.env.NODE_ENV === "development" ||
+              (opts.direction === "down" && opts.result instanceof Error),
           }),
           httpLink({
-            url: baseUrl + "/trpc",
+            url: `${baseUrl}/trpc`,
             fetch(url, options) {
               return fetch(url, {
                 ...options,
